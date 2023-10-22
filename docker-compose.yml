@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+  app:
+    hostname: app
+    build: 
+      dockerfile: Dockerfile 
+      context: .
+    depends_on:
+      - db
+    ports:
+      - "3234:3234"
+    networks:
+      - backend
+  
+  db:
+    hostname: db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=supersecret
+      - POSTGRES_USER=user 
+      - POSTGRES_DB=gallery
+    ports:
+      - 5432:5432
+    volumes:
+      - gallery-db:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
+    networks:
+      - backend
+
+volumes:
+  gallery-db:
+networks:
+  backend:
+    name: backend-network

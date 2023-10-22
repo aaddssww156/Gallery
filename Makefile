@@ -1,5 +1,8 @@
 serve:
-	@go run cmd/server/main.go
+	@go run main.go
 
-run-migrate:
-	@go run cmd/migrator/main.go 
+build:
+	@go build -o bin/main 
+
+run:
+	@./bin/main 
