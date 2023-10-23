@@ -9,33 +9,48 @@ import (
 	"path"
 )
 
+// var t = template.Must(template.ParseGlob("templates/*"))
+
 func main() {
 	log.Println("server")
-
 	db.Connect()
-	log.Println(db.GetAllTech())
-	log.Println(db.GetTech(3))
-
-	http.HandleFunc("/", handleMain)
-	http.HandleFunc("/click", handleClick)
+	// http.HandleFunc("/", handleMain)
+	// http.HandleFunc("/click", handleClick)
+	http.HandleFunc("/admin", handleAdmin)
+	http.HandleFunc("/add-tech", handleAddTech)
 
 	log.Fatal(http.ListenAndServe(":3333", nil))
 }
 
-func handleMain(w http.ResponseWriter, r *http.Request) {
+func handleAdmin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		t := template.Must(template.ParseFiles(getTemplatePath("index.html")))
-		t.Execute(w, nil)
+		tech := db.GetAllTech()
+		log.Println(tech)
+		t := template.Must(template.ParseFiles("templates/admin.html", "templates/admin-tech.html"))
+		t.ExecuteTemplate(w, "admin", tech)
 	}
-	w.WriteHeader(http.StatusNotFound)
 }
 
-func handleClick(w http.ResponseWriter, r *http.Request) {
+func handleAddTech(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		log.Println("clicked")
-		w.WriteHeader(200)
+		log.Println(r.FormValue("tech"))
+		// t := template.Must(template.ParseFiles(getTemplatePath("admin.html"), getTemplatePath("header.html")))
+		// t.Execute(w, nil)
 	}
 }
+
+// func handleMain(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == http.MethodGet {
+// 		t := template.Must(template.ParseFiles(getTemplatePath("index.html")))
+// 		t.Execute(w, nil)
+// 	}
+// }
+
+// func handleClick(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == http.MethodPost {
+// 		log.Println("clicked")
+// 	}
+// }
 
 func getTemplatePath(fileName string) string {
 	wd, err := os.Getwd()

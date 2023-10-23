@@ -1,0 +1,12 @@
+{{ define "admin-tech"}}
+<div>
+    <form hx-post="/add-tech" hx-target="">
+        <div>Добавление техники</div>
+        <input name="tech" type="text" placeholder="название техники" />
+        <button type="submit">Добавить</button>
+    </form>
+    {{ range .}}
+        <div>{{.ID}} - {{.Tech}}</div>
+    {{ end }}
+</div>
+{{ end }}
