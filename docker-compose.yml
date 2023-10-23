@@ -1,17 +1,17 @@
 version: '3.1'
 
 services:
-  app:
-    hostname: app
-    build: 
-      dockerfile: Dockerfile 
-      context: .
-    depends_on:
-      - db
-    ports:
-      - "3234:3234"
-    networks:
-      - backend
+  # app:
+  #   hostname: app
+  #   build: 
+  #     dockerfile: Dockerfile 
+  #     context: .
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - "3234:3234"
+  #   networks:
+  #     - backend
   
   db:
     hostname: db
