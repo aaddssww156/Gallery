@@ -1,15 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"gallery/db"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 )
 
-// var t = template.Must(template.ParseGlob("templates/*"))
+// 1 - Акварель
+// 2 - Гуашь
+// 3 - Сангина
+// 4 - Уголь
+// 5 - Карандаш
+// 6 - Масло
+// 7 - Эпоксидная смола
+// 8 - Текстура
+// 9 - Fluid Art
+// 10 - Спиртовые чернила
 
 func main() {
 	log.Println("server")
@@ -18,6 +29,7 @@ func main() {
 	// http.HandleFunc("/click", handleClick)
 	http.HandleFunc("/admin", handleAdmin)
 	http.HandleFunc("/add-tech", handleAddTech)
+	http.HandleFunc("/delete-tech", handleDeleteTech)
 
 	log.Fatal(http.ListenAndServe(":3333", nil))
 }
@@ -36,6 +48,21 @@ func handleAddTech(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.FormValue("tech"))
 		// t := template.Must(template.ParseFiles(getTemplatePath("admin.html"), getTemplatePath("header.html")))
 		// t.Execute(w, nil)
+	}
+}
+
+func handleDeleteTech(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.FormValue("id"))
+	if err != nil {
+		w.Write([]byte("Введите валидный id"))
+	}
+
+	if err := db.DeteleTech(id); err != nil {
+		w.Write([]byte(err.Error()))
+	}
+
+	if err == nil {
+		fmt.Fprintf(w, "Успешно удалена техника рисования с id %d", id)
 	}
 }
 

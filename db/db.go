@@ -23,6 +23,15 @@ func Connect() {
 	}
 }
 
+func DeteleTech(id int) error {
+	sql := `DELETE FROM tech WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetTech(id int) models.Tech {
 	sql := `select * from tech where id=$1`
 

@@ -9,6 +9,8 @@
 -- ('Fluid Art'),
 -- ('Спиртовые чернила');
 
+INSERT INTO tech (tech) VALUES ('Тест');
+
 -- -- DROP TABLE painting_to_person;
 -- -- DROP TABLE person_to_room;
 -- -- DROP TABLE painting;

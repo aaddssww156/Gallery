@@ -1,12 +1,26 @@
 {{ define "admin-tech"}}
 <div>
-    <form hx-post="/add-tech" hx-target="">
+    {{ range .}}
+        <div>{{.ID}} - {{.Tech}}</div>
+    {{ end }}
+
+    <form hx-post="/add-tech" hx-target="#test">
         <div>Добавление техники</div>
         <input name="tech" type="text" placeholder="название техники" />
         <button type="submit">Добавить</button>
     </form>
-    {{ range .}}
-        <div>{{.ID}} - {{.Tech}}</div>
-    {{ end }}
+
+    <div id="test">
+        
+    </div>
+
+    <form hx-post="/delete-tech" hx-target="#result">
+        <div>Удаление техники</div>
+        <input name="id" type="text" placeholder="id техники" />
+        <button type="submit">Удалить</button>
+    </form>
+
+    <div id="result"></div>
+
 </div>
 {{ end }}
