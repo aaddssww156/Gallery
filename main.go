@@ -1,38 +1,20 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"gallery/models"
+	"gallery/db"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path"
-
-	"github.com/jackc/pgx/v5"
 )
-
-const DB_URL = "postgres://user:supersecret@localhost:5432/gallery"
 
 func main() {
 	log.Println("server")
 
-	conn, err := pgx.Connect(context.Background(), DB_URL)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-	defer conn.Close(context.Background())
-
-	var tech models.Tech
-	err = conn.QueryRow(context.Background(), "select id, tech from tech where id=$1", 2).Scan(&tech.ID, &tech.Tech)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
-
-	fmt.Println(tech)
+	db.Connect()
+	log.Println(db.GetAllTech())
+	log.Println(db.GetTech(3))
 
 	http.HandleFunc("/", handleMain)
 	http.HandleFunc("/click", handleClick)
