@@ -10,9 +10,12 @@ import (
 func main() {
 	db.Connect()
 	http.HandleFunc("/", handleMain)
-	http.HandleFunc("/styles/", handleStyle)
 	http.HandleFunc("/tech/", handleTech)
+	http.HandleFunc("/styles/", handleStyle)
+	http.HandleFunc("/rooms/", handleRooms)
 	http.HandleFunc("/authors", handleAuthors)
+	http.HandleFunc("/paintings", handlePaintings)
+	http.HandleFunc("/persons", handlePersons)
 
 	log.Println("server is running on 3333 port")
 	log.Fatal(http.ListenAndServe(":3333", nil))
@@ -33,10 +36,21 @@ func handleTech(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRooms(w http.ResponseWriter, r *http.Request) {
-	// rooms := db.GetAllRooms()
+	rooms := db.GetAllRooms()
+	json.NewEncoder(w).Encode(rooms)
 }
 
 func handleAuthors(w http.ResponseWriter, r *http.Request) {
 	authors := db.GetAllAuthors()
 	json.NewEncoder(w).Encode(authors)
+}
+
+func handlePaintings(w http.ResponseWriter, r *http.Request) {
+	paintings := db.GetAllPaintings()
+	json.NewEncoder(w).Encode(paintings)
+}
+
+func handlePersons(w http.ResponseWriter, r *http.Request) {
+	persons := db.GetAllPersons()
+	json.NewEncoder(w).Encode(persons)
 }
