@@ -37,9 +37,14 @@ func main() {
 func handleAdmin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		tech := db.GetAllTech()
+		style := db.GetAllTech()
 		log.Println(tech)
 		t := template.Must(template.ParseFiles("templates/admin.html", "templates/admin-tech.html"))
-		t.ExecuteTemplate(w, "admin", tech)
+		data := map[string]interface{}{
+			"tech":  tech,
+			"style": style,
+		}
+		t.ExecuteTemplate(w, "admin", data)
 	}
 }
 

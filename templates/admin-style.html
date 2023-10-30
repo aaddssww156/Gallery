@@ -1,0 +1,26 @@
+{{ define "admin-style"}}
+<div>
+    {{ range .}}
+        <div>{{.ID}} - {{.Style}}</div>
+    {{ end }}
+
+    <form hx-post="/add-style" hx-target="#test">
+        <div>Добавление стиля рисования</div>
+        <input name="tech" type="text" placeholder="название стиля" />
+        <button type="submit">Добавить</button>
+    </form>
+
+    <div id="test_2">
+        
+    </div>
+
+    <form hx-post="/delete-style" hx-target="#result">
+        <div>Удаление стиля</div>
+        <input name="id" type="text" placeholder="id стиля" />
+        <button type="submit">Удалить</button>
+    </form>
+
+    <div id="result"></div>
+
+</div>
+{{ end }}

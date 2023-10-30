@@ -66,3 +66,21 @@ func GetAllTech() []models.Tech {
 
 	return tech
 }
+func GetAllStyle() []models.Style {
+	sql := `select * from style`
+
+	row, err := db.Query(context.Background(), sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var style []models.Style
+
+	for row.Next() {
+		var id int
+		var styleS string
+		row.Scan(&id, &styleS)
+		style = append(style, models.Style{ID: id, Style: styleS})
+	}
+
+	return style
+}
