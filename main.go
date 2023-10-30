@@ -1,93 +1,42 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"gallery/db"
-	"html/template"
 	"log"
 	"net/http"
-	"os"
-	"path"
-	"strconv"
 )
 
-// 1 - Акварель
-// 2 - Гуашь
-// 3 - Сангина
-// 4 - Уголь
-// 5 - Карандаш
-// 6 - Масло
-// 7 - Эпоксидная смола
-// 8 - Текстура
-// 9 - Fluid Art
-// 10 - Спиртовые чернила
-
 func main() {
-	log.Println("server")
 	db.Connect()
-	// http.HandleFunc("/", handleMain)
-	// http.HandleFunc("/click", handleClick)
-	http.HandleFunc("/admin", handleAdmin)
-	http.HandleFunc("/add-tech", handleAddTech)
-	http.HandleFunc("/delete-tech", handleDeleteTech)
+	http.HandleFunc("/", handleMain)
+	http.HandleFunc("/styles/", handleStyle)
+	http.HandleFunc("/tech/", handleTech)
+	http.HandleFunc("/authors", handleAuthors)
 
+	log.Println("server is running on 3333 port")
 	log.Fatal(http.ListenAndServe(":3333", nil))
 }
 
-func handleAdmin(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		tech := db.GetAllTech()
-		style := db.GetAllTech()
-		log.Println(tech)
-		t := template.Must(template.ParseFiles("templates/admin.html", "templates/admin-tech.html"))
-		data := map[string]interface{}{
-			"tech":  tech,
-			"style": style,
-		}
-		t.ExecuteTemplate(w, "admin", data)
-	}
+func handleMain(w http.ResponseWriter, r *http.Request) {
 }
 
-func handleAddTech(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		log.Println(r.FormValue("tech"))
-		// t := template.Must(template.ParseFiles(getTemplatePath("admin.html"), getTemplatePath("header.html")))
-		// t.Execute(w, nil)
-	}
+func handleStyle(w http.ResponseWriter, r *http.Request) {
+	styles := db.GetAllStyle()
+	json.NewEncoder(w).Encode(styles)
 }
 
-func handleDeleteTech(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.FormValue("id"))
-	if err != nil {
-		w.Write([]byte("Введите валидный id"))
-	}
-
-	if err := db.DeteleTech(id); err != nil {
-		w.Write([]byte(err.Error()))
-	}
-
-	if err == nil {
-		fmt.Fprintf(w, "Успешно удалена техника рисования с id %d", id)
-	}
+func handleTech(w http.ResponseWriter, r *http.Request) {
+	// log.Println(path.Base(r.URL.String()))
+	tech := db.GetAllTech()
+	json.NewEncoder(w).Encode(tech)
 }
 
-// func handleMain(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method == http.MethodGet {
-// 		t := template.Must(template.ParseFiles(getTemplatePath("index.html")))
-// 		t.Execute(w, nil)
-// 	}
-// }
+func handleRooms(w http.ResponseWriter, r *http.Request) {
+	// rooms := db.GetAllRooms()
+}
 
-// func handleClick(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method == http.MethodPost {
-// 		log.Println("clicked")
-// 	}
-// }
-
-func getTemplatePath(fileName string) string {
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return path.Join(wd, "templates", fileName)
+func handleAuthors(w http.ResponseWriter, r *http.Request) {
+	authors := db.GetAllAuthors()
+	json.NewEncoder(w).Encode(authors)
 }

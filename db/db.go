@@ -35,17 +35,17 @@ func DeteleTech(id int) error {
 func GetTech(id int) models.Tech {
 	sql := `select * from tech where id=$1`
 
-	row := db.QueryRow(context.Background(), sql, id)
-
-	var id2 int
-	var tech2 string
-	row.Scan(&id2, &tech2)
-
-	return models.Tech{
-		ID:   id2,
-		Tech: tech2,
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
 	}
 
+	tech, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Tech])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return tech
 }
 
 func GetAllTech() []models.Tech {
@@ -55,17 +55,15 @@ func GetAllTech() []models.Tech {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var tech []models.Tech
 
-	for row.Next() {
-		var id int
-		var techS string
-		row.Scan(&id, &techS)
-		tech = append(tech, models.Tech{ID: id, Tech: techS})
+	tech, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Tech])
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	return tech
 }
+
 func GetAllStyle() []models.Style {
 	sql := `select * from style`
 
@@ -73,14 +71,75 @@ func GetAllStyle() []models.Style {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var style []models.Style
 
-	for row.Next() {
-		var id int
-		var styleS string
-		row.Scan(&id, &styleS)
-		style = append(style, models.Style{ID: id, Style: styleS})
+	style, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Style])
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	return style
+}
+
+func GetAllRooms() []models.Room {
+	sql := `select * from room`
+
+	row, err := db.Query(context.Background(), sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rooms, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Room])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return rooms
+}
+
+func GetAllAuthors() []models.Author {
+	sql := `select * from author`
+
+	row, err := db.Query(context.Background(), sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	authors, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Author])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return authors
+}
+
+func GetAllPaintings() []models.Painting {
+	sql := `select * from painting`
+
+	row, err := db.Query(context.Background(), sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	paintings, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Painting])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return paintings
+}
+
+func GetAllPersons() []models.Person {
+	sql := `select * from person`
+
+	row, err := db.Query(context.Background(), sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	persons, err := pgx.CollectRows(row, pgx.RowToStructByName[models.Person])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return persons
 }
