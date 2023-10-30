@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS author (
     id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(255),
     surname VARCHAR(255),
-    date_born timestamp without time zone,
-    date_died timestamp without time zone,
+    date_born date,
+    date_died date,
     description TEXT
 );
 
