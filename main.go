@@ -7,8 +7,15 @@ import (
 	"net/http"
 )
 
-func main() {
+// Инициализация приложения
+// Создаем соединение к базе данных, после чего запускаем миграцию
+func init() {
 	db.Connect()
+	db.Migrate()
+}
+
+func main() {
+	// Обработчики http запросов
 	http.HandleFunc("/", handleMain)
 	http.HandleFunc("/tech/", handleTech)
 	http.HandleFunc("/styles/", handleStyle)
@@ -17,6 +24,7 @@ func main() {
 	http.HandleFunc("/paintings", handlePaintings)
 	http.HandleFunc("/persons", handlePersons)
 
+	// Запуск севера
 	log.Println("server is running on 3333 port")
 	log.Fatal(http.ListenAndServe(":3333", nil))
 }

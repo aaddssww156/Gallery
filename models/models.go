@@ -2,16 +2,21 @@ package models
 
 import "time"
 
+// Словарь для хранения техник написания картин
 type Tech struct {
 	ID   int    `json:"id"`
 	Tech string `json:"tech"`
 }
 
+// Словарь для хранения стиля написания картин
 type Style struct {
 	ID    int    `json:"id"`
 	Style string `json:"style"`
 }
 
+// Объект для хранения информации о комнатах
+// В комнатах есть ограничение количества мест для коллекционеров, которые выставляют в комнатах свои картины
+// Комнаты так же могут быть тематическими, например: "Городской пейзаж", "Военная тематика"
 type Room struct {
 	ID       int    `json:"id,omitempty"`
 	Name     string `json:"name,omitempty"`
@@ -19,6 +24,8 @@ type Room struct {
 	Theme    string `json:"theme,omitempty"`
 }
 
+// Объект для хранения информации о художнике
+// В таблице хранится основная информация о художнике, который писал те или иные картины
 type Author struct {
 	ID          int       `json:"id,omitempty"`
 	Name        string    `json:"name,omitempty"`
@@ -28,6 +35,9 @@ type Author struct {
 	Description string    `json:"description,omitempty"`
 }
 
+// Объект для хранения информации о картинах
+// Объект связан со стилями и техникой написания, а так же автором, который написал эту картину
+// TODO: добавить путь до файла на сервере для отображения изображения на клиенте
 type Painting struct {
 	ID       string `json:"id,omitempty"`
 	Name     string `json:"name,omitempty"`
@@ -37,6 +47,8 @@ type Painting struct {
 	TechId   int    `json:"tech_id,omitempty"`
 }
 
+// Объект для хранения информации о коллекционере.
+// Если коллекционер не активен, то он архивируется и его учетная запись не используется на сайте
 type Person struct {
 	ID     int    `json:"id,omitempty"`
 	Name   string `json:"name,omitempty"`
