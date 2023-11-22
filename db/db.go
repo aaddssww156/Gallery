@@ -85,6 +85,33 @@ func GetAllTech() []models.Tech {
 	return tech
 }
 
+// Удаление выбранной записи tech из таблицы по id
+func DeteleStyle(id int) error {
+	sql := `DELETE FROM style WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Получение выбранной записи tech по id
+func GetStyle(id int) models.Style {
+	sql := `select * from style where id=$1`
+
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	style, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Style])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return style
+}
+
 // Получение всех записей style
 func GetAllStyle() []models.Style {
 	sql := `select * from style`
@@ -100,6 +127,33 @@ func GetAllStyle() []models.Style {
 	}
 
 	return style
+}
+
+// Удаление выбранной записи tech из таблицы по id
+func DeteleRoom(id int) error {
+	sql := `DELETE FROM room WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Получение выбранной записи tech по id
+func GetRoom(id int) models.Room {
+	sql := `select * from room where id=$1`
+
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	room, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Room])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return room
 }
 
 // Получение всех записей room
@@ -119,6 +173,33 @@ func GetAllRooms() []models.Room {
 	return rooms
 }
 
+// Удаление выбранной записи tech из таблицы по id
+func DeteleAuthor(id int) error {
+	sql := `DELETE FROM author WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Получение выбранной записи tech по id
+func GetAuthor(id int) models.Author {
+	sql := `select * from author where id=$1`
+
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	author, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Author])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return author
+}
+
 // Получение всех записей authors
 func GetAllAuthors() []models.Author {
 	sql := `select * from author`
@@ -136,6 +217,33 @@ func GetAllAuthors() []models.Author {
 	return authors
 }
 
+// Удаление выбранной записи tech из таблицы по id
+func DetelePainting(id int) error {
+	sql := `DELETE FROM painting WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Получение выбранной записи tech по id
+func GetPainting(id int) models.Painting {
+	sql := `select * from painting where id=$1`
+
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	painting, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Painting])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return painting
+}
+
 // Получение всех записей painting
 func GetAllPaintings() []models.Painting {
 	sql := `select * from painting`
@@ -151,6 +259,33 @@ func GetAllPaintings() []models.Painting {
 	}
 
 	return paintings
+}
+
+// Удаление выбранной записи tech из таблицы по id
+func DetelePerson(id int) error {
+	sql := `DELETE FROM person WHERE id=$1`
+	_, err := db.Exec(context.Background(), sql, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Получение выбранной записи tech по id
+func GetPerson(id int) models.Person {
+	sql := `select * from person where id=$1`
+
+	row, err := db.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	person, err := pgx.CollectOneRow(row, pgx.RowToStructByName[models.Person])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return person
 }
 
 // Получение всех записей person
