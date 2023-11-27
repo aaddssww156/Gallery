@@ -2,20 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var room models.Room
+
 func GetAllRooms(w http.ResponseWriter, r *http.Request) {
-	rooms := db.GetAllRooms()
+	rooms := room.GetAll()
 	json.NewEncoder(w).Encode(rooms)
 }
 
 func GetRoom(w http.ResponseWriter, r *http.Request) {
-
+	room := room.Get()
+	json.NewEncoder(w).Encode(room)
 }
 
 func SaveRoom(w http.ResponseWriter, r *http.Request) {
@@ -24,13 +27,12 @@ func SaveRoom(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("can't insert room data"))
 	}
-
-	db.SaveRoom(data)
+	room.Save()
 }
 
 func DeleteRoom(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeleteRoom(id)
+	room.Delete()
 }
 
 func UpdateRoom(w http.ResponseWriter, r *http.Request) {
@@ -40,5 +42,5 @@ func UpdateRoom(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update room data"))
 	}
 
-	db.UpdateRoom(data)
+	room.Update()
 }

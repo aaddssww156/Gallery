@@ -2,20 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var painting models.Painting
+
 func GetAllPaintings(w http.ResponseWriter, r *http.Request) {
-	paintings := db.GetAllPaintings()
+	paintings := painting.GetAll()
 	json.NewEncoder(w).Encode(paintings)
 }
 
 func GetPainting(w http.ResponseWriter, r *http.Request) {
-
+	painting := painting.Get()
+	json.NewEncoder(w).Encode(painting)
 }
 
 func SavePainting(w http.ResponseWriter, r *http.Request) {
@@ -25,12 +28,12 @@ func SavePainting(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert painting data"))
 	}
 
-	db.SavePainting(data)
+	painting.Save()
 }
 
 func DeletePainting(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeletePainting(id)
+	painting.Delete()
 }
 
 func UpdatePainting(w http.ResponseWriter, r *http.Request) {
@@ -40,5 +43,5 @@ func UpdatePainting(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update painting data"))
 	}
 
-	db.UpdatePainting(data)
+	painting.Update()
 }

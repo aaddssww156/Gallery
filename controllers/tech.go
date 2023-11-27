@@ -2,20 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var tech models.Tech
+
 func GetAllTechs(w http.ResponseWriter, r *http.Request) {
-	tech := db.GetAllTech()
-	json.NewEncoder(w).Encode(tech)
+	techs := tech.GetAll()
+	json.NewEncoder(w).Encode(techs)
 }
 
 func GetTech(w http.ResponseWriter, r *http.Request) {
-
+	tech := tech.Get()
+	json.NewEncoder(w).Encode(tech)
 }
 
 func SaveTech(w http.ResponseWriter, r *http.Request) {
@@ -25,12 +28,12 @@ func SaveTech(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert tech data"))
 	}
 
-	db.SaveTech(data)
+	tech.Save()
 }
 
 func DeleteTech(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeleteTech(id)
+	tech.Delete()
 }
 
 func UpdateTech(w http.ResponseWriter, r *http.Request) {
@@ -40,5 +43,5 @@ func UpdateTech(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update tech data"))
 	}
 
-	db.UpdateTech(data)
+	tech.Update()
 }

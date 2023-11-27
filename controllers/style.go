@@ -2,20 +2,22 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var style models.Style
+
 func GetAllStyles(w http.ResponseWriter, r *http.Request) {
-	style := db.GetAllStyles()
-	json.NewEncoder(w).Encode(style)
+	styles := style.GetAll()
+	json.NewEncoder(w).Encode(styles)
 }
 
 func GetStyle(w http.ResponseWriter, r *http.Request) {
-
+	style := style.Get()
 }
 
 func SaveStyle(w http.ResponseWriter, r *http.Request) {
@@ -25,12 +27,13 @@ func SaveStyle(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert style data"))
 	}
 
-	db.SaveStyle(data)
+	style.Save()
 }
 
 func DeleteStyle(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeleteStyle(id)
+	// db.DeleteStyle(id)
+	style.Delete()
 }
 
 func UpdateStyle(w http.ResponseWriter, r *http.Request) {
@@ -40,5 +43,5 @@ func UpdateStyle(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update style data"))
 	}
 
-	db.UpdateStyle(data)
+	style.Update()
 }

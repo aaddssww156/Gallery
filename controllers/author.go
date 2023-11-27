@@ -2,19 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var author models.Author
+
 func GetAllAuthors(w http.ResponseWriter, r *http.Request) {
-	authors := db.GetAllAuthors()
+	authors := author.GetAll()
 	json.NewEncoder(w).Encode(authors)
 }
 
 func GetAuthor(w http.ResponseWriter, r *http.Request) {
+	author := author.Get()
+	json.NewEncoder(w).Encode(author)
 }
 
 func SaveAuthor(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +27,12 @@ func SaveAuthor(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("can't insert author data"))
 	}
-
-	db.SaveAuthor(data)
+	author.Save()
 }
 
 func DeleteAuthor(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeleteAuthor(id)
+	author.Delete()
 }
 
 func UpdateAuthor(w http.ResponseWriter, r *http.Request) {
@@ -39,5 +42,5 @@ func UpdateAuthor(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update author data"))
 	}
 
-	db.UpdateAuthor(data)
+	author.Update()
 }

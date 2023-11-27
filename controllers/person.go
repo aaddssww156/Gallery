@@ -2,20 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"gallery/db"
+	"gallery/models"
 	"io"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
+var person models.Person
+
 func GetAllPersons(w http.ResponseWriter, r *http.Request) {
-	person := db.GetAllTech()
-	json.NewEncoder(w).Encode(person)
+	persons := person.GetAll()
+	json.NewEncoder(w).Encode(persons)
 }
 
 func GetPerson(w http.ResponseWriter, r *http.Request) {
-
+	person := person.Get()
+	json.NewEncoder(w).Encode(person)
 }
 
 func SavePerson(w http.ResponseWriter, r *http.Request) {
@@ -25,12 +28,12 @@ func SavePerson(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert person data"))
 	}
 
-	db.SavePerson(data)
+	person.Save()
 }
 
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.DeletePerson(id)
+	person.Delete()
 }
 
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
@@ -40,5 +43,5 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update person data"))
 	}
 
-	db.UpdatePerson(data)
+	person.Update()
 }
