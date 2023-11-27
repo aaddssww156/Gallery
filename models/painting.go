@@ -12,7 +12,7 @@ import (
 // Объект связан со стилями и техникой написания, а так же автором, который написал эту картину
 // TODO: добавить путь до файла на сервере для отображения изображения на клиенте
 type Painting struct {
-	ID       string `json:"id,omitempty"`
+	ID       int    `json:"id,omitempty"`
 	Name     string `json:"name,omitempty"`
 	Year     int    `json:"year,omitempty"`
 	AuthorId int    `json:"author_id,omitempty"`
