@@ -15,7 +15,7 @@ type Style struct {
 }
 
 // Удаление выбранной записи tech из таблицы по id
-func (s *Style) DeleteStyle(id int) error {
+func (s *Style) Delete(id int) error {
 	sql := `DELETE FROM style WHERE id=$1`
 	_, err := db.DB.Exec(context.Background(), sql, id)
 	if err != nil {
@@ -25,7 +25,7 @@ func (s *Style) DeleteStyle(id int) error {
 	return nil
 }
 
-func (s *Style) GetStyle(id int) Style {
+func (s *Style) Get(id int) Style {
 	sql := `SELECT * FROM style WHERE id=$1`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -42,7 +42,7 @@ func (s *Style) GetStyle(id int) Style {
 }
 
 // Запись сущности tech в базу данных
-func (s *Style) SaveStyle(style string) {
+func (s *Style) Save(style string) {
 	sql := `INSERT INTO style (style) VALUES ($1)`
 
 	_, err := db.DB.Exec(context.Background(), sql, style)
@@ -52,7 +52,7 @@ func (s *Style) SaveStyle(style string) {
 }
 
 // Обновление данных для записи tech
-func (s *Style) UpdateStyle(style, id string) {
+func (s *Style) Update(style, id string) {
 	sql := `UPDATE style SET style = $1 WHERE id = $2`
 
 	_, err := db.DB.Exec(context.Background(), sql, style, id)
@@ -62,7 +62,7 @@ func (s *Style) UpdateStyle(style, id string) {
 }
 
 // Получение всех записей tech
-func (s *Style) GetAllStyles() []Style {
+func (s *Style) GetAll() []Style {
 	sql := `SELECT * FROM style`
 
 	row, err := db.DB.Query(context.Background(), sql)

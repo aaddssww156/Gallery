@@ -21,7 +21,7 @@ type Author struct {
 }
 
 // Удаление выбранной записи tech из таблицы по id
-func (a *Author) DeleteAuthor(id int) error {
+func (a *Author) Delete(id int) error {
 	sql := `DELETE FROM author WHERE id=$1`
 	_, err := db.DB.Exec(context.Background(), sql, id)
 	if err != nil {
@@ -32,7 +32,7 @@ func (a *Author) DeleteAuthor(id int) error {
 }
 
 // Получение выбранной записи tech по id
-func (a *Author) GetAuthor(id int) Author {
+func (a *Author) Get(id int) Author {
 	sql := `SELECT * FROM tech WHERE id=$1`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -49,7 +49,7 @@ func (a *Author) GetAuthor(id int) Author {
 }
 
 // Запись сущности tech в базу данных
-func (a *Author) SaveAuthor(name, surname string, date_born, date_died time.Time, description string) {
+func (a *Author) Save(name, surname string, date_born, date_died time.Time, description string) {
 	sql := `INSERT INTO author (name, surname, date_born, date_died, description) VALUES ($1, $2, $3, $4, $5)`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, surname, date_born, date_died, description)
@@ -59,7 +59,7 @@ func (a *Author) SaveAuthor(name, surname string, date_born, date_died time.Time
 }
 
 // Обновление данных для записи tech
-func (a *Author) UpdateAuthor(name, surname string, date_born, date_died time.Time, description string, id int) {
+func (a *Author) Update(name, surname string, date_born, date_died time.Time, description string, id int) {
 	sql := `UPDATE author SET name = $1, surname = $2, date_born = $3, date_died = $4, description = $5 WHERE id = $6`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, surname, date_born, date_died, description, id)
@@ -69,7 +69,7 @@ func (a *Author) UpdateAuthor(name, surname string, date_born, date_died time.Ti
 }
 
 // Получение всех записей tech
-func (a *Author) GetAllAuthors() []Author {
+func (a *Author) GetAll() []Author {
 	sql := `SELECT * FROM author`
 
 	row, err := db.DB.Query(context.Background(), sql)

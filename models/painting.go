@@ -21,7 +21,7 @@ type Painting struct {
 }
 
 // Удаление выбранной записи tech из таблицы по id
-func (p *Painting) DeletePainting(id int) error {
+func (p *Painting) Delete(id int) error {
 	sql := `DELETE FROM painting WHERE id=$1`
 	_, err := db.DB.Exec(context.Background(), sql, id)
 	if err != nil {
@@ -32,7 +32,7 @@ func (p *Painting) DeletePainting(id int) error {
 }
 
 // Получение выбранной записи tech по id
-func (p *Painting) GetPaintins(id int) Painting {
+func (p *Painting) Get(id int) Painting {
 	sql := `SELECT * FROM painting WHERE id=$1`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -49,7 +49,7 @@ func (p *Painting) GetPaintins(id int) Painting {
 }
 
 // Запись сущности tech в базу данных
-func (p *Painting) SavePainting(name string, year, author_id, style_id, tech_id int) {
+func (p *Painting) Save(name string, year, author_id, style_id, tech_id int) {
 	sql := `INSERT INTO painting (name, year, author_id, style_id, tech_id) VALUES ($1, $2, $3, $4)`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, year, author_id, style_id, tech_id)
@@ -59,7 +59,7 @@ func (p *Painting) SavePainting(name string, year, author_id, style_id, tech_id 
 }
 
 // Обновление данных для записи tech
-func (p *Painting) UpdatePainting(name string, year, author_id, style_id, tech_id, id int) {
+func (p *Painting) Update(name string, year, author_id, style_id, tech_id, id int) {
 	sql := `UPDATE person SET name = $1, phone = $2, email = $3, active = $4 WHERE id = $5`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, year, author_id, style_id, tech_id, id)
@@ -69,7 +69,7 @@ func (p *Painting) UpdatePainting(name string, year, author_id, style_id, tech_i
 }
 
 // Получение всех записей tech
-func (p *Painting) GetAllPaintings() []Painting {
+func (p *Painting) GetAll() []Painting {
 	sql := `SELECT * FROM painting`
 
 	row, err := db.DB.Query(context.Background(), sql)

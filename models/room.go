@@ -19,7 +19,7 @@ type Room struct {
 }
 
 // Удаление выбранной записи tech из таблицы по id
-func (r *Room) DeleteRoom(id int) error {
+func (r *Room) Delete(id int) error {
 	sql := `DELETE FROM room WHERE id=$1`
 	_, err := db.DB.Exec(context.Background(), sql, id)
 	if err != nil {
@@ -30,7 +30,7 @@ func (r *Room) DeleteRoom(id int) error {
 }
 
 // Получение выбранной записи tech по id
-func (r *Room) GetRoom(id int) Room {
+func (r *Room) Get(id int) Room {
 	sql := `SELECT * FROM room WHERE id=$1`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -47,7 +47,7 @@ func (r *Room) GetRoom(id int) Room {
 }
 
 // Запись сущности tech в базу данных
-func (r *Room) SaveRoom(name string, capacity int, theme string) {
+func (r *Room) Save(name string, capacity int, theme string) {
 	sql := `INSERT INTO room (name, capacity, theme) VALUES ($1, $2, 3)`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, capacity, theme)
@@ -57,7 +57,7 @@ func (r *Room) SaveRoom(name string, capacity int, theme string) {
 }
 
 // Обновление данных для записи tech
-func (r *Room) UpdateRoom(name, capacity, theme string, id int) {
+func (r *Room) Update(name, capacity, theme string, id int) {
 	sql := `UPDATE room SET name = $1, capacity = $2, theme = $3 WHERE id = $4`
 
 	_, err := db.DB.Exec(context.Background(), sql, name, capacity, theme, id)
@@ -67,7 +67,7 @@ func (r *Room) UpdateRoom(name, capacity, theme string, id int) {
 }
 
 // Получение всех записей tech
-func (r *Room) GetAllRooms() []Room {
+func (r *Room) GetAll() []Room {
 	sql := `SELECT * FROM room`
 
 	row, err := db.DB.Query(context.Background(), sql)

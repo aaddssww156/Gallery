@@ -15,7 +15,7 @@ type Tech struct {
 }
 
 // Удаление выбранной записи tech из таблицы по id
-func (t *Tech) DeleteTech(id int) error {
+func (t *Tech) Delete(id int) error {
 	sql := `DELETE FROM tech WHERE id=$1`
 	_, err := db.DB.Exec(context.Background(), sql, id)
 	if err != nil {
@@ -26,7 +26,7 @@ func (t *Tech) DeleteTech(id int) error {
 }
 
 // Получение выбранной записи tech по id
-func (t *Tech) GetTech(id int) Tech {
+func (t *Tech) Get(id int) Tech {
 	sql := `SELECT * FROM tech WHERE id=$1`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -43,7 +43,7 @@ func (t *Tech) GetTech(id int) Tech {
 }
 
 // Запись сущности tech в базу данных
-func (t *Tech) SaveTech(tech string) {
+func (t *Tech) Save(tech string) {
 	sql := `INSERT INTO tech (tech) VALUES ($1)`
 
 	_, err := db.DB.Exec(context.Background(), sql, tech)
@@ -53,7 +53,7 @@ func (t *Tech) SaveTech(tech string) {
 }
 
 // Обновление данных для записи tech
-func (t *Tech) UpdateTech(tech, id string) {
+func (t *Tech) Update(tech, id string) {
 	sql := `UPDATE tech SET tech = $1 WHERE id = $2`
 
 	_, err := db.DB.Exec(context.Background(), sql, tech, id)
@@ -63,7 +63,7 @@ func (t *Tech) UpdateTech(tech, id string) {
 }
 
 // Получение всех записей tech
-func (t *Tech) GetAllTechs() []Tech {
+func (t *Tech) GetAll() []Tech {
 	sql := `SELECT * FROM tech`
 
 	row, err := db.DB.Query(context.Background(), sql)
