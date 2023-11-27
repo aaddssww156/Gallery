@@ -14,6 +14,10 @@ func GetAllRooms(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(rooms)
 }
 
+func GetRoom(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func SaveRoom(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {

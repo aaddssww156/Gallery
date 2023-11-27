@@ -14,6 +14,10 @@ func GetAllPersons(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(person)
 }
 
+func GetPerson(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func SavePerson(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {

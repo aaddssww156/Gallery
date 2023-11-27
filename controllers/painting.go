@@ -14,6 +14,10 @@ func GetAllPaintings(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(paintings)
 }
 
+func GetPainting(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func SavePainting(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {

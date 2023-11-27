@@ -31,6 +31,14 @@ func Routes() http.Handler {
 	router.Get("api/v1/painting", controllers.GetAllPaintings)
 	router.Get("api/v1/person", controllers.GetAllPersons)
 
+	// Получение объекта по id
+	router.Get("api/v1/tech/{id}", controllers.GetTech)
+	router.Get("api/v1/style/{id}", controllers.GetStyle)
+	router.Get("api/v1/room/{id}", controllers.GetRoom)
+	router.Get("api/v1/author/{id}", controllers.GetAuthor)
+	router.Get("api/v1/painting/{id}", controllers.GetPainting)
+	router.Get("api/v1/person/{id}", controllers.GetPerson)
+
 	// Запись объектов в базу данных
 	router.Post("api/v1/tech", controllers.SaveTech)
 	router.Post("api/v1/style", controllers.SaveStyle)

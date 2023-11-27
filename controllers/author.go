@@ -14,6 +14,9 @@ func GetAllAuthors(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(authors)
 }
 
+func GetAuthor(w http.ResponseWriter, r *http.Request) {
+}
+
 func SaveAuthor(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {

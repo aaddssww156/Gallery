@@ -14,6 +14,10 @@ func GetAllTechs(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tech)
 }
 
+func GetTech(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func SaveTech(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {
