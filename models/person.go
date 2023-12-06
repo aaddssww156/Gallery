@@ -18,6 +18,13 @@ type Person struct {
 	Active bool   `json:"active,omitempty"`
 }
 
+type PersonInfo struct {
+	PersonName  string `json:"person_name,omitempty"`
+	PersonPhone string `json:"person_phone,omitempty"`
+	PersonEmail string `json:"person_email,omitempty"`
+	RoomName    string `json:"room_name,omitempty"`
+}
+
 // Удаление выбранной записи tech из таблицы по id
 func (p *Person) Delete(id int) error {
 	sql := `DELETE FROM person WHERE id=$1`
@@ -81,4 +88,30 @@ func (p *Person) GetAll() []Person {
 	}
 
 	return persons
+}
+
+func (p *Person) GetInfo(id int) []PersonInfo {
+	sql := `
+		SELECT p.name AS person_name,
+			   p.phone AS person_phone,
+			   p.email AS person_email,
+			   r.name AS room_name
+		FROM person p
+		JOIN person_to_room ptr ON p.id = ptr.person_id
+		JOIN room r ON ptr.room_id = r.id
+		WHERE p.id = $1
+	`
+
+	row, err := db.DB.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	personInfo, err := pgx.CollectRows(row, pgx.RowToStructByName[PersonInfo])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return personInfo
+
 }

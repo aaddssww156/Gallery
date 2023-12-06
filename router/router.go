@@ -40,7 +40,10 @@ func Routes() http.Handler {
 	router.Get("api/v1/person/{id}", controllers.GetPerson)
 
 	// Получение полной информации о картине
-	router.Get("api/v1/painting/{id}", controllers.GetPaintingInfo)
+	router.Get("api/v1/painting/{id}/info", controllers.GetPaintingInfo)
+
+	// Получение полной информации о коллекционере
+	router.Get("api/v1/person/{id}", controllers.GetPersonInfo)
 
 	// Запись объектов в базу данных
 	router.Post("api/v1/tech", controllers.SaveTech)
