@@ -42,20 +42,20 @@ func (s *Style) Get(id int) Style {
 }
 
 // Запись сущности tech в базу данных
-func (s *Style) Save(style string) {
+func (s *Style) Save(style Style) {
 	sql := `INSERT INTO style (style) VALUES ($1)`
 
-	_, err := db.DB.Exec(context.Background(), sql, style)
+	_, err := db.DB.Exec(context.Background(), sql, style.Style)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Обновление данных для записи tech
-func (s *Style) Update(style, id string) {
+func (s *Style) Update(style Style) {
 	sql := `UPDATE style SET style = $1 WHERE id = $2`
 
-	_, err := db.DB.Exec(context.Background(), sql, style, id)
+	_, err := db.DB.Exec(context.Background(), sql, style.Style, style.ID)
 	if err != nil {
 		log.Fatal(err)
 	}

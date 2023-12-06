@@ -43,20 +43,20 @@ func (t *Tech) Get(id int) Tech {
 }
 
 // Запись сущности tech в базу данных
-func (t *Tech) Save(tech string) {
+func (t *Tech) Save(tech Tech) {
 	sql := `INSERT INTO tech (tech) VALUES ($1)`
 
-	_, err := db.DB.Exec(context.Background(), sql, tech)
+	_, err := db.DB.Exec(context.Background(), sql, tech.Tech)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Обновление данных для записи tech
-func (t *Tech) Update(tech, id string) {
+func (t *Tech) Update(tech Tech) {
 	sql := `UPDATE tech SET tech = $1 WHERE id = $2`
 
-	_, err := db.DB.Exec(context.Background(), sql, tech, id)
+	_, err := db.DB.Exec(context.Background(), sql, tech.Tech, tech.ID)
 	if err != nil {
 		log.Fatal(err)
 	}

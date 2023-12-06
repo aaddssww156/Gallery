@@ -47,20 +47,20 @@ func (r *Room) Get(id int) Room {
 }
 
 // Запись сущности tech в базу данных
-func (r *Room) Save(name string, capacity int, theme string) {
+func (r *Room) Save(room Room) {
 	sql := `INSERT INTO room (name, capacity, theme) VALUES ($1, $2, 3)`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, capacity, theme)
+	_, err := db.DB.Exec(context.Background(), sql, room.Name, room.Capacity, room.Theme)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Обновление данных для записи tech
-func (r *Room) Update(name, capacity, theme string, id int) {
+func (r *Room) Update(room Room) {
 	sql := `UPDATE room SET name = $1, capacity = $2, theme = $3 WHERE id = $4`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, capacity, theme, id)
+	_, err := db.DB.Exec(context.Background(), sql, room.Name, room.Capacity, room.Theme, room.ID)
 	if err != nil {
 		log.Fatal(err)
 	}

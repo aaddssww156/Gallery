@@ -20,15 +20,12 @@ func GetAllPaintings(w http.ResponseWriter, r *http.Request) {
 
 func GetPainting(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "id")
-
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	painting.ID = id
-
-	painting := painting.Get()
+	painting := painting.Get(id)
 	json.NewEncoder(w).Encode(painting)
 }
 

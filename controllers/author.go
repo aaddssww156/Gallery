@@ -19,7 +19,12 @@ func GetAllAuthors(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAuthor(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
+	idParam := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	author := author.Get(id)
 	json.NewEncoder(w).Encode(author)
 }

@@ -49,20 +49,20 @@ func (p *Painting) Get(id int) Painting {
 }
 
 // Запись сущности tech в базу данных
-func (p *Painting) Save(name string, year, author_id, style_id, tech_id int) {
+func (p *Painting) Save(painting Painting) {
 	sql := `INSERT INTO painting (name, year, author_id, style_id, tech_id) VALUES ($1, $2, $3, $4)`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, year, author_id, style_id, tech_id)
+	_, err := db.DB.Exec(context.Background(), sql, painting.Name, painting.Year, painting.AuthorId, painting.StyleId, painting.TechId)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Обновление данных для записи tech
-func (p *Painting) Update(name string, year, author_id, style_id, tech_id, id int) {
+func (p *Painting) Update(painting Painting) {
 	sql := `UPDATE person SET name = $1, phone = $2, email = $3, active = $4 WHERE id = $5`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, year, author_id, style_id, tech_id, id)
+	_, err := db.DB.Exec(context.Background(), sql, painting.Name, painting.Year, painting.AuthorId, painting.StyleId, painting.TechId, painting.ID)
 	if err != nil {
 		log.Fatal(err)
 	}

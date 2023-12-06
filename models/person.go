@@ -47,20 +47,20 @@ func (p *Person) Get(id int) Person {
 }
 
 // Запись сущности tech в базу данных
-func (p *Person) Save(name, phone, email string, active bool) {
+func (p *Person) Save(person Person) {
 	sql := `INSERT INTO person (name, phone, email, active) VALUES ($1, $2, $3, $4)`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, phone, email, active)
+	_, err := db.DB.Exec(context.Background(), sql, person.Name, person.Phone, person.Email, person.Active)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Обновление данных для записи tech
-func (p *Person) Update(name, phone, email string, active, bool, id int) {
+func (p *Person) Update(person Person) {
 	sql := `UPDATE person SET name = $1, phone = $2, email = $3, active = $4 WHERE id = $5`
 
-	_, err := db.DB.Exec(context.Background(), sql, name, phone, email, active, id)
+	_, err := db.DB.Exec(context.Background(), sql, person.Name, person.Phone, person.Email, person.Active, person.ID)
 	if err != nil {
 		log.Fatal(err)
 	}
