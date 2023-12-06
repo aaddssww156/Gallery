@@ -20,6 +20,17 @@ type Painting struct {
 	TechId   int    `json:"tech_id,omitempty"`
 }
 
+type PaintingInfo struct {
+	PaintingName   string `json:"painting_name,omitempty"`
+	PaintingYear   string `json:"painting_year,omitempty"`
+	AuthorName     string `json:"author_name,omitempty"`
+	AuthorSurname  string `json:"author_surname,omitempty"`
+	AuthorDateBorn string `json:"author_date_born,omitempty"`
+	AuthorDateDied string `json:"author_date_died,omitempty"`
+	Style          string `json:"style,omitempty"`
+	Tech           string `json:"tech,omitempty"`
+}
+
 // Удаление выбранной записи tech из таблицы по id
 func (p *Painting) Delete(id int) error {
 	sql := `DELETE FROM painting WHERE id=$1`
@@ -83,4 +94,34 @@ func (p *Painting) GetAll() []Painting {
 	}
 
 	return paintings
+}
+
+func (p *Painting) GetInfo(id int) PaintingInfo {
+	sql := `
+	SELECT p.name AS painting_name,
+		   p.year AS painting_year,
+		   a.name AS author_name,
+		   a.surname AS author_surname,
+		   a.date_born AS author_date_born,
+		   a.date_died AS author_date_died,
+		   s.style AS style,
+		   t.tech AS tech
+	FROM painting p, author a, style s, tech t
+	WHERE p.id = $1 AND
+		  p.author_id = a.id AND
+		  p.style_id  = s.id AND
+		  p.tech_id   = t.id
+	`
+
+	row, err := db.DB.Query(context.Background(), sql, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	paintingInfo, err := pgx.CollectOneRow(row, pgx.RowToStructByName[PaintingInfo])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return paintingInfo
 }
