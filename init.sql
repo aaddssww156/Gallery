@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS painting_to_person (
 );
 
 -- Процедура для поиска всех 
-CREATE PROCEDURE get_max_room()
+CREATE OR REPLACE PROCEDURE get_max_room()
 LANGUAGE SQL
 AS $$
     SELECT * FROM room WHERE id = (
