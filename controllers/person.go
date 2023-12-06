@@ -38,7 +38,7 @@ func SavePerson(w http.ResponseWriter, r *http.Request) {
 
 	var personData models.Person
 
-	if err := json.Unmarshal(data, personData); err != nil {
+	if err := json.Unmarshal(data, &personData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 
 	var personData models.Person
 
-	if err := json.Unmarshal(data, personData); err != nil {
+	if err := json.Unmarshal(data, &personData); err != nil {
 		log.Fatal(err)
 	}
 

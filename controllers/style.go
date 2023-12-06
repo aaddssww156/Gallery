@@ -39,7 +39,7 @@ func SaveStyle(w http.ResponseWriter, r *http.Request) {
 
 	var styleData models.Style
 
-	if err := json.Unmarshal(data, styleData); err != nil {
+	if err := json.Unmarshal(data, &styleData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -65,7 +65,7 @@ func UpdateStyle(w http.ResponseWriter, r *http.Request) {
 
 	var styleData models.Style
 
-	if err := json.Unmarshal(data, styleData); err != nil {
+	if err := json.Unmarshal(data, &styleData); err != nil {
 		log.Fatal(err)
 	}
 

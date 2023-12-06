@@ -38,7 +38,7 @@ func SaveRoom(w http.ResponseWriter, r *http.Request) {
 
 	var roomData models.Room
 
-	if err := json.Unmarshal(data, roomData); err != nil {
+	if err := json.Unmarshal(data, &roomData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func UpdateRoom(w http.ResponseWriter, r *http.Request) {
 
 	var roomData models.Room
 
-	if err := json.Unmarshal(data, roomData); err != nil {
+	if err := json.Unmarshal(data, &roomData); err != nil {
 		log.Fatal(err)
 	}
 

@@ -38,7 +38,7 @@ func SaveAuthor(w http.ResponseWriter, r *http.Request) {
 
 	var authorData models.Author
 
-	if err := json.Unmarshal(data, authorData); err != nil {
+	if err := json.Unmarshal(data, &authorData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func UpdateAuthor(w http.ResponseWriter, r *http.Request) {
 
 	var authorData models.Author
 
-	if err := json.Unmarshal(data, authorData); err != nil {
+	if err := json.Unmarshal(data, &authorData); err != nil {
 		log.Fatal(err)
 	}
 

@@ -38,7 +38,7 @@ func SaveTech(w http.ResponseWriter, r *http.Request) {
 
 	var techData models.Tech
 
-	if err := json.Unmarshal(data, techData); err != nil {
+	if err := json.Unmarshal(data, &techData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func UpdateTech(w http.ResponseWriter, r *http.Request) {
 
 	var techData models.Tech
 
-	if err := json.Unmarshal(data, techData); err != nil {
+	if err := json.Unmarshal(data, &techData); err != nil {
 		log.Fatal(err)
 	}
 

@@ -38,7 +38,7 @@ func SavePainting(w http.ResponseWriter, r *http.Request) {
 
 	var paintingData models.Painting
 
-	if err := json.Unmarshal(data, paintingData); err != nil {
+	if err := json.Unmarshal(data, &paintingData); err != nil {
 		log.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func UpdatePainting(w http.ResponseWriter, r *http.Request) {
 
 	var paintingData models.Painting
 
-	if err := json.Unmarshal(data, paintingData); err != nil {
+	if err := json.Unmarshal(data, &paintingData); err != nil {
 		log.Fatal(err)
 	}
 
