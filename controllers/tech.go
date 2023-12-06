@@ -19,15 +19,13 @@ func GetAllTechs(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTech(w http.ResponseWriter, r *http.Request) {
-	idParam := chi.URLParam("id")
+	idParam := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	tech.ID = id
-
-	tech := tech.Get()
+	tech := tech.Get(id)
 	json.NewEncoder(w).Encode(tech)
 }
 
@@ -38,11 +36,13 @@ func SaveTech(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert tech data"))
 	}
 
-	if err := json.Unmarshal(data, tech); err != nil {
+	var techData models.Tech
+
+	if err := json.Unmarshal(data, techData); err != nil {
 		log.Fatal(err)
 	}
 
-	tech.Save()
+	tech.Save(techData)
 }
 
 func DeleteTech(w http.ResponseWriter, r *http.Request) {
@@ -52,9 +52,7 @@ func DeleteTech(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	tech.ID = id
-
-	tech.Delete()
+	tech.Delete(id)
 }
 
 func UpdateTech(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +62,11 @@ func UpdateTech(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update tech data"))
 	}
 
-	if err := json.Unmarshal(data, tech); err != nil {
+	var techData models.Tech
+
+	if err := json.Unmarshal(data, techData); err != nil {
 		log.Fatal(err)
 	}
 
-	tech.Update()
+	tech.Update(techData)
 }

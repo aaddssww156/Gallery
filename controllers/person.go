@@ -25,9 +25,7 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	person.ID = id
-
-	person := person.Get()
+	person := person.Get(id)
 	json.NewEncoder(w).Encode(person)
 }
 
@@ -38,11 +36,13 @@ func SavePerson(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert person data"))
 	}
 
-	if err := json.Unmarshal(data, person); err != nil {
+	var personData models.Person
+
+	if err := json.Unmarshal(data, personData); err != nil {
 		log.Fatal(err)
 	}
 
-	person.Save()
+	person.Save(personData)
 }
 
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
@@ -52,9 +52,7 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	person.ID = id
-
-	person.Delete()
+	person.Delete(id)
 }
 
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +62,11 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update person data"))
 	}
 
-	if json.Unmarshal(data, err); err != nil {
+	var personData models.Person
+
+	if err := json.Unmarshal(data, personData); err != nil {
 		log.Fatal(err)
 	}
 
-	person.Update()
+	person.Update(personData)
 }

@@ -19,15 +19,13 @@ func GetAllRooms(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetRoom(w http.ResponseWriter, r *http.Request) {
-	idParam := chi.URLParam("id")
+	idParam := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	room.ID = id
-
-	room := room.Get()
+	room := room.Get(id)
 	json.NewEncoder(w).Encode(room)
 }
 
@@ -38,11 +36,13 @@ func SaveRoom(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert room data"))
 	}
 
-	if err := json.Unmarshal(data, room); err != nil {
+	var roomData models.Room
+
+	if err := json.Unmarshal(data, roomData); err != nil {
 		log.Fatal(err)
 	}
 
-	room.Save()
+	room.Save(roomData)
 }
 
 func DeleteRoom(w http.ResponseWriter, r *http.Request) {
@@ -52,9 +52,7 @@ func DeleteRoom(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	room.ID = id
-
-	room.Delete()
+	room.Delete(id)
 }
 
 func UpdateRoom(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +62,11 @@ func UpdateRoom(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update room data"))
 	}
 
-	if err := json.Unmarshal(data, room); err != nil {
+	var roomData models.Room
+
+	if err := json.Unmarshal(data, roomData); err != nil {
 		log.Fatal(err)
 	}
 
-	room.Update()
+	room.Update(roomData)
 }

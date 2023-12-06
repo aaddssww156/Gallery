@@ -39,11 +39,13 @@ func SavePainting(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert painting data"))
 	}
 
-	if err := json.Unmarshal(data, painting); err != nil {
+	var paintingData models.Painting
+
+	if err := json.Unmarshal(data, paintingData); err != nil {
 		log.Fatal(err)
 	}
 
-	painting.Save()
+	painting.Save(paintingData)
 }
 
 func DeletePainting(w http.ResponseWriter, r *http.Request) {
@@ -53,9 +55,7 @@ func DeletePainting(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	painting.ID = id
-
-	painting.Delete()
+	painting.Delete(id)
 }
 
 func UpdatePainting(w http.ResponseWriter, r *http.Request) {
@@ -65,9 +65,11 @@ func UpdatePainting(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update painting data"))
 	}
 
-	if err := json.Unmarshal(data, painting); err != nil {
+	var paintingData models.Painting
+
+	if err := json.Unmarshal(data, paintingData); err != nil {
 		log.Fatal(err)
 	}
 
-	painting.Update()
+	painting.Update(paintingData)
 }

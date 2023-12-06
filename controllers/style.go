@@ -19,16 +19,14 @@ func GetAllStyles(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStyle(w http.ResponseWriter, r *http.Request) {
-	idParam := chi.URLParam("id")
+	idParam := chi.URLParam(r, "id")
 
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	style.ID = id
-
-	style := style.Get()
+	style := style.Get(id)
 	json.NewEncoder(w).Encode(style)
 }
 
@@ -39,11 +37,13 @@ func SaveStyle(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert style data"))
 	}
 
-	if err := json.Unmarshal(data, style); err != nil {
+	var styleData models.Style
+
+	if err := json.Unmarshal(data, styleData); err != nil {
 		log.Fatal(err)
 	}
 
-	style.Save()
+	style.Save(styleData)
 }
 
 func DeleteStyle(w http.ResponseWriter, r *http.Request) {
@@ -53,9 +53,7 @@ func DeleteStyle(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	style.ID = id
-
-	style.Delete()
+	style.Delete(id)
 }
 
 func UpdateStyle(w http.ResponseWriter, r *http.Request) {
@@ -65,9 +63,11 @@ func UpdateStyle(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update style data"))
 	}
 
-	if err := json.Unmarshal(data, style); err != nil {
+	var styleData models.Style
+
+	if err := json.Unmarshal(data, styleData); err != nil {
 		log.Fatal(err)
 	}
 
-	style.Update()
+	style.Update(styleData)
 }

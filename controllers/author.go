@@ -19,16 +19,8 @@ func GetAllAuthors(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAuthor(w http.ResponseWriter, r *http.Request) {
-	idParam := chi.URLParam(r, "id")
-
-	id, err := strconv.Atoi(idParam)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	author.ID = id
-
-	author := author.Get()
+	id := chi.URLParam(r, "id")
+	author := author.Get(id)
 	json.NewEncoder(w).Encode(author)
 }
 
@@ -39,11 +31,13 @@ func SaveAuthor(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't insert author data"))
 	}
 
-	if err := json.Unmarshal(data, author); err != nil {
+	var authorData models.Author
+
+	if err := json.Unmarshal(data, authorData); err != nil {
 		log.Fatal(err)
 	}
 
-	author.Save()
+	author.Save(authorData)
 }
 
 func DeleteAuthor(w http.ResponseWriter, r *http.Request) {
@@ -53,9 +47,7 @@ func DeleteAuthor(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	author.ID = id
-
-	author.Delete()
+	author.Delete(id)
 }
 
 func UpdateAuthor(w http.ResponseWriter, r *http.Request) {
@@ -65,9 +57,11 @@ func UpdateAuthor(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("can't update author data"))
 	}
 
-	if err := json.Unmarshal(data, author); err != nil {
+	var authorData models.Author
+
+	if err := json.Unmarshal(data, authorData); err != nil {
 		log.Fatal(err)
 	}
 
-	author.Update()
+	author.Update(authorData)
 }
