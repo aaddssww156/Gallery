@@ -58,3 +58,19 @@ CREATE TABLE IF NOT EXISTS painting_to_person (
     painting_id int references painting(id),
     person_id int references person(id)
 );
+
+-- Процедура для поиска всех 
+CREATE PROCEDURE get_max_room()
+LANGUAGE SQL
+AS $$
+    SELECT * FROM room WHERE id = (
+        SELECT room_id FROM person_to_room WHERE person_id = (
+            SELECT id FROM PERSON WHERE id = (
+                SELECT person_id FROM painting_to_person GROUP BY person_id HAVING COUNT(painting_id) = (
+                    SELECT MAX(id_counter) FROM (
+                        SELECT painting_id, COUNT(painting_id) as id_counter FROM painting_to_person GROUP BY painting_id) as id_counter
+                ) 
+            )
+        )
+    );
+$$
