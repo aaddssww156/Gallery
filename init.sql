@@ -59,6 +59,12 @@ CREATE TABLE IF NOT EXISTS painting_to_person (
     person_id int references person(id)
 );
 
+-- Триггер для капитализации всех имен и фамилий
+CREATE OR REPLACE TRIGGER capitalizer 
+BEFORE INSERT ON person 
+FOR EACH ROW
+SET NEW.name = INITCAP(NEW.name);
+
 -- Процедура для поиска всех 
 CREATE OR REPLACE PROCEDURE get_max_room()
 LANGUAGE SQL
