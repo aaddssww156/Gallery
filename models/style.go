@@ -35,7 +35,8 @@ func (s *Style) Get(id int) Style {
 
 	style, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Style])
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
+		return Style{}
 	}
 
 	return style

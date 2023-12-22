@@ -1,6 +1,6 @@
 -- Словарь с возможными стилями живописи
 CREATE TABLE IF NOT EXISTS style (
-    id SERIAL NOT NULL PRIMARY KEY ,
+    id SERIAL NOT NULL PRIMARY KEY,
     style TEXT
 );
 
@@ -59,11 +59,17 @@ CREATE TABLE IF NOT EXISTS painting_to_person (
     person_id int references person(id)
 );
 
+CREATE OR REPLACE FUNCTION capitalizer() RETURNS TRIGGER AS $$
+    BEGIN 
+        NEW.name := INITCAP(NEW.name);
+        RETURN NEW;
+    END;
+$$ LANGUAGE plpgsql;
+
 -- Триггер для капитализации всех имен и фамилий
 CREATE OR REPLACE TRIGGER capitalizer 
 BEFORE INSERT ON person 
-FOR EACH ROW
-SET NEW.name = INITCAP(NEW.name);
+FOR EACH ROW EXECUTE FUNCTION capitalizer();
 
 -- Процедура для поиска всех 
 CREATE OR REPLACE PROCEDURE get_max_room()
@@ -72,11 +78,28 @@ AS $$
     SELECT * FROM room WHERE id = (
         SELECT room_id FROM person_to_room WHERE person_id = (
             SELECT id FROM PERSON WHERE id = (
-                SELECT person_id FROM painting_to_person GROUP BY person_id HAVING COUNT(painting_id) = (
-                    SELECT MAX(id_counter) FROM (
-                        SELECT painting_id, COUNT(painting_id) as id_counter FROM painting_to_person GROUP BY painting_id) as id_counter
-                ) 
+                SELECT id FROM (
+                    SELECT person_id AS id, painting_id FROM painting_to_person GROUP BY person_id, painting_id HAVING COUNT(painting_id) = (
+                        SELECT MAX(id_counter) FROM (
+                            SELECT painting_id, COUNT(painting_id) as id_counter FROM painting_to_person GROUP BY painting_id) as id_counter
+                    )
+                ) id limit 1
             )
         )
     );
 $$
+
+-- CREATE OR REPLACE FUNCTION clean_up()
+-- RETURNS void
+-- LANGUAGE plpgsql 
+-- AS $$
+-- BEGIN
+--     TRUNCATE TABLE style RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE tech RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE room RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE author RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE painting RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE person RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE person_to_room RESTART IDENTITY CASCADE;
+--     TRUNCATE TABLE painting_to_person RESTART IDENTITY CASCADE;
+-- end $$;

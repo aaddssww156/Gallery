@@ -40,6 +40,38 @@ func GetPersonInfo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(personInfo)
 }
 
+func SavePaintingToPerson(w http.ResponseWriter, r *http.Request) {
+	data, err := io.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("can't save painting to person"))
+	}
+
+	var PtP models.PaintingToPerson
+
+	if err := json.Unmarshal(data, &PtP); err != nil {
+		log.Fatal(err)
+	}
+
+	person.SavePaintingForPerson(PtP)
+}
+
+func SavePersonToRoom(w http.ResponseWriter, r *http.Request) {
+	data, err := io.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("can't save person to room"))
+	}
+
+	var PtR models.PersonToRoom
+
+	if err := json.Unmarshal(data, &PtR); err != nil {
+		log.Fatal(err)
+	}
+
+	person.SavePersonToRoom(PtR)
+}
+
 func SavePerson(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {

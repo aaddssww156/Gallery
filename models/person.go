@@ -16,6 +16,17 @@ type Person struct {
 	Phone  string `json:"phone,omitempty"`
 	Email  string `json:"email,omitempty"`
 	Active bool   `json:"active,omitempty"`
+	RoomId int    `json:"room_id,omitempty"`
+}
+
+type PersonToRoom struct {
+	PersonId int `json:"person_id,omitempty"`
+	RoomId   int `json:"room_id,omitempty"`
+}
+
+type PaintingToPerson struct {
+	PaintingId int `json:"painting_id,omitempty"`
+	PersonId   int `json:"person_id,omitempty"`
 }
 
 type PersonInfo struct {
@@ -47,7 +58,7 @@ func (p *Person) Get(id int) Person {
 
 	person, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Person])
 	if err != nil {
-		log.Fatal(err)
+		return Person{}
 	}
 
 	return person
@@ -90,7 +101,7 @@ func (p *Person) GetAll() []Person {
 	return persons
 }
 
-func (p *Person) GetInfo(id int) []PersonInfo {
+func (p *Person) GetInfo(id int) PersonInfo {
 	sql := `
 		SELECT p.name AS person_name,
 			   p.phone AS person_phone,
@@ -99,7 +110,7 @@ func (p *Person) GetInfo(id int) []PersonInfo {
 		FROM person p
 		JOIN person_to_room ptr ON p.id = ptr.person_id
 		JOIN room r ON ptr.room_id = r.id
-		WHERE p.id = $1
+		WHERE p.id = $1;
 	`
 
 	row, err := db.DB.Query(context.Background(), sql, id)
@@ -107,11 +118,39 @@ func (p *Person) GetInfo(id int) []PersonInfo {
 		log.Fatal(err)
 	}
 
-	personInfo, err := pgx.CollectRows(row, pgx.RowToStructByName[PersonInfo])
-	if err != nil {
-		log.Fatal(err)
+	var personName string
+	var personPhone string
+	var personEmail string
+	var roomName string
+	if row.Next() {
+		row.Scan(&personName, &personPhone, &personEmail, &roomName)
+	}
+
+	personInfo := PersonInfo{
+		PersonName:  personName,
+		PersonPhone: personPhone,
+		PersonEmail: personEmail,
+		RoomName:    roomName,
 	}
 
 	return personInfo
 
+}
+
+func (p *Person) SavePersonToRoom(personToRoom PersonToRoom) {
+	sql := `INSERT INTO person_to_room (person_id, room_id) VALUES ($1, $2)`
+
+	_, err := db.DB.Exec(context.Background(), sql, personToRoom.PersonId, personToRoom.RoomId)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (p *Person) SavePaintingForPerson(paintingToPerson PaintingToPerson) {
+	sql := `INSERT INTO painting_to_person (painting_id, person_id) VALUES ($1, $2)`
+
+	_, err := db.DB.Exec(context.Background(), sql, paintingToPerson.PaintingId, paintingToPerson.PersonId)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

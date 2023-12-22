@@ -23,51 +23,56 @@ func Routes() http.Handler {
 		MaxAge:           300,
 	}))
 
+	router.Get("/cleanup", controllers.CleanUp)
+
 	// Получение всех объектов
-	router.Get("api/v1/tech", controllers.GetAllTechs)
-	router.Get("api/v1/style", controllers.GetAllStyles)
-	router.Get("api/v1/room", controllers.GetAllRooms)
-	router.Get("api/v1/author", controllers.GetAllAuthors)
-	router.Get("api/v1/painting", controllers.GetAllPaintings)
-	router.Get("api/v1/person", controllers.GetAllPersons)
+	router.Get("/api/v1/tech", controllers.GetAllTechs)         // +
+	router.Get("/api/v1/style", controllers.GetAllStyles)       // +
+	router.Get("/api/v1/room", controllers.GetAllRooms)         // +
+	router.Get("/api/v1/author", controllers.GetAllAuthors)     // +
+	router.Get("/api/v1/painting", controllers.GetAllPaintings) // +
+	router.Get("/api/v1/person", controllers.GetAllPersons)     // +
 
 	// Получение объекта по id
-	router.Get("api/v1/tech/{id}", controllers.GetTech)
-	router.Get("api/v1/style/{id}", controllers.GetStyle)
-	router.Get("api/v1/room/{id}", controllers.GetRoom)
-	router.Get("api/v1/author/{id}", controllers.GetAuthor)
-	router.Get("api/v1/painting/{id}", controllers.GetPainting)
-	router.Get("api/v1/person/{id}", controllers.GetPerson)
+	router.Get("/api/v1/tech/{id}", controllers.GetTech)         // +
+	router.Get("/api/v1/style/{id}", controllers.GetStyle)       //+
+	router.Get("/api/v1/room/{id}", controllers.GetRoom)         // +
+	router.Get("/api/v1/author/{id}", controllers.GetAuthor)     // +
+	router.Get("/api/v1/painting/{id}", controllers.GetPainting) // +
+	router.Get("/api/v1/person/{id}", controllers.GetPerson)     // +
 
 	// Получение полной информации о картине
-	router.Get("api/v1/painting/{id}/info", controllers.GetPaintingInfo)
+	router.Get("/api/v1/painting/{id}/info", controllers.GetPaintingInfo) // +
 
 	// Получение полной информации о коллекционере
-	router.Get("api/v1/person/{id}", controllers.GetPersonInfo)
+	router.Get("/api/v1/person/{id}/info", controllers.GetPersonInfo) // +
 
 	// Запись объектов в базу данных
-	router.Post("api/v1/tech", controllers.SaveTech)
-	router.Post("api/v1/style", controllers.SaveStyle)
-	router.Post("api/v1/room", controllers.SaveRoom)
-	router.Post("api/v1/author", controllers.SaveAuthor)
-	router.Post("api/v1/painting", controllers.SavePainting)
-	router.Post("api/v1/person", controllers.SavePerson)
+	router.Post("/api/v1/tech", controllers.SaveTech)
+	router.Post("/api/v1/style", controllers.SaveStyle)
+	router.Post("/api/v1/room", controllers.SaveRoom)
+	router.Post("/api/v1/author", controllers.SaveAuthor)
+	router.Post("/api/v1/painting", controllers.SavePainting)
+	router.Post("/api/v1/person", controllers.SavePerson)
+
+	router.Post("/api/v1/person/add_room", controllers.SavePersonToRoom)
+	router.Post("/api/v1/person/add_painting", controllers.SavePaintingToPerson)
 
 	// Удаление объектов с базы данных
-	router.Delete("api/v1/tech/{id}", controllers.DeleteTech)
-	router.Delete("api/v1/style/{id}", controllers.DeleteStyle)
-	router.Delete("api/v1/room/{id}", controllers.DeleteRoom)
-	router.Delete("api/v1/author/{id}", controllers.DeleteAuthor)
-	router.Delete("api/v1/painting/{id}", controllers.DeletePainting)
-	router.Delete("api/v1/person/{id}", controllers.DeletePerson)
+	router.Delete("/api/v1/tech/{id}", controllers.DeleteTech)
+	router.Delete("/api/v1/style/{id}", controllers.DeleteStyle)
+	router.Delete("/api/v1/room/{id}", controllers.DeleteRoom)
+	router.Delete("/api/v1/author/{id}", controllers.DeleteAuthor)
+	router.Delete("/api/v1/painting/{id}", controllers.DeletePainting)
+	router.Delete("/api/v1/person/{id}", controllers.DeletePerson)
 
-	// Удаление объектов с базы данных
-	router.Patch("api/v1/tech", controllers.UpdateTech)
-	router.Patch("api/v1/style", controllers.UpdateStyle)
-	router.Patch("api/v1/room", controllers.UpdateRoom)
-	router.Patch("api/v1/author", controllers.UpdateAuthor)
-	router.Patch("api/v1/painting", controllers.UpdatePainting)
-	router.Patch("api/v1/person", controllers.UpdatePerson)
+	// Обновление записей в базе данных
+	router.Patch("/api/v1/tech", controllers.UpdateTech)
+	router.Patch("/api/v1/style", controllers.UpdateStyle)
+	router.Patch("/api/v1/room", controllers.UpdateRoom)
+	router.Patch("/api/v1/author", controllers.UpdateAuthor)
+	router.Patch("/api/v1/painting", controllers.UpdatePainting)
+	router.Patch("/api/v1/person", controllers.UpdatePerson)
 
 	return router
 }

@@ -40,7 +40,7 @@ func (r *Room) Get(id int) Room {
 
 	room, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Room])
 	if err != nil {
-		log.Fatal(err)
+		return Room{}
 	}
 
 	return room
@@ -48,7 +48,7 @@ func (r *Room) Get(id int) Room {
 
 // Запись сущности tech в базу данных
 func (r *Room) Save(room Room) {
-	sql := `INSERT INTO room (name, capacity, theme) VALUES ($1, $2, 3)`
+	sql := `INSERT INTO room (name, capacity, theme) VALUES ($1, $2, $3)`
 
 	_, err := db.DB.Exec(context.Background(), sql, room.Name, room.Capacity, room.Theme)
 	if err != nil {

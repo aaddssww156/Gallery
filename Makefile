@@ -1,8 +1,8 @@
 serve:
-	@go run main.go
+	@go run cmd/server/main.go
 
 build:
-	@go build -o bin/main 
+	@go build -o bin/main cmd/server/main 
 
 run:
 	@./bin/main 

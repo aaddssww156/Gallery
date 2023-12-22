@@ -42,7 +42,7 @@ func (a *Author) Get(id int) Author {
 
 	author, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Author])
 	if err != nil {
-		log.Fatal(err)
+		return Author{}
 	}
 
 	return author

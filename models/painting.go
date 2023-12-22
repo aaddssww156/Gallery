@@ -53,7 +53,7 @@ func (p *Painting) Get(id int) Painting {
 
 	painting, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Painting])
 	if err != nil {
-		log.Fatal(err)
+		return Painting{}
 	}
 
 	return painting
@@ -61,7 +61,7 @@ func (p *Painting) Get(id int) Painting {
 
 // Запись сущности tech в базу данных
 func (p *Painting) Save(painting Painting) {
-	sql := `INSERT INTO painting (name, year, author_id, style_id, tech_id) VALUES ($1, $2, $3, $4)`
+	sql := `INSERT INTO painting (name, year, author_id, style_id, tech_id) VALUES ($1, $2, $3, $4, $5)`
 
 	_, err := db.DB.Exec(context.Background(), sql, painting.Name, painting.Year, painting.AuthorId, painting.StyleId, painting.TechId)
 	if err != nil {
@@ -120,7 +120,7 @@ func (p *Painting) GetInfo(id int) PaintingInfo {
 
 	paintingInfo, err := pgx.CollectOneRow(row, pgx.RowToStructByName[PaintingInfo])
 	if err != nil {
-		log.Fatal(err)
+		return PaintingInfo{}
 	}
 
 	return paintingInfo

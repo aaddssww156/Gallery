@@ -36,7 +36,7 @@ func (t *Tech) Get(id int) Tech {
 
 	tech, err := pgx.CollectOneRow(row, pgx.RowToStructByName[Tech])
 	if err != nil {
-		log.Fatal(err)
+		return Tech{}
 	}
 
 	return tech
